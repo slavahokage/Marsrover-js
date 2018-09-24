@@ -1,0 +1,149 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <style>
+        #MarsRover {
+            height: 120px;
+            width: 120px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: 220px;
+            position: relative;
+            cursor: pointer;
+        }
+
+        #blocktext {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .buttons{
+            text-align:center;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 15px 25px;
+            font-size: 24px;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            outline: none;
+            color: #fff;
+            background-color: orange;
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 9px #999;
+        }
+
+        .button:hover {background-color: #3e8e41}
+
+        .button:active {
+            background-color: #3e8e41;
+            box-shadow: 0 5px #666;
+            transform: translateY(4px);
+        }
+
+        td, th {
+            padding: 15px;
+            border: 2px solid wheat;
+            width: 120px;
+            text-align: center;
+            color: wheat;
+        }
+        .score{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        h3{
+            margin-right: 10px;
+        }
+
+        .reverse{
+            transform: scale(-1, 1);
+        }
+
+    </style>
+</head>
+<body background="bonneville_crater.jpg">
+<h1 id="blocktext">
+    Elon Musk Mars expedition
+</h1>
+<div class="buttons">
+    <button id = "a" class="button">A</button>
+    <button id="r" class="button">R</button>
+</div>
+
+<div class="score">
+    <h3 id ='position'>Position: 0</h3>
+    <h3 id='speed'>Speed: 1</h3>
+</div>
+
+<br>
+<img id="MarsRover" src="MarsRover.png">
+<table>
+    <td id="0">
+        -5
+    </td>
+    <td id="1">
+        -4
+    </td>
+    <td id="2">
+        -3
+    </td>
+    <td id="3">
+        -2
+    </td>
+    <td id="4">
+        -1
+    </td>
+    <td id="5">
+        0
+    </td>
+    <td id="6">
+        1
+    </td>
+    <td id="7">
+        2
+    </td>
+    <td id="8">
+        3
+    </td>
+    <td id="9">
+        4
+    </td>
+    <td id="10">
+        5
+    </td>
+
+</table>
+</body>
+
+<script>
+    a.addEventListener("click", function () {
+        var start = Date.now();
+        document.getElementById('a').style.visibility = 'hidden';
+        document.getElementById('r').style.visibility = 'hidden';
+        var timer = setInterval(function () {
+            var timePassed = Date.now() - start;
+
+            if (timePassed >= 2000) {
+                clearInterval(timer);
+                return;
+            }
+            draw(timePassed);
+
+        }, 20);
+
+        function draw(timePassed) {
+            MarsRover.style.left = timePassed / 200 + '%';
+            console.log(timePassed / 200 + '%');
+        }
+
+    });
+</script>
+</html>
