@@ -79,8 +79,8 @@
 </div>
 
 <div class="score">
-    <h3 id ='position'>Position: 0</h3>
-    <h3 id='speed'>Speed: 1</h3>
+    <h3 id ='p'>Position: 0</h3>
+    <h3 id='s'>Speed: 1</h3>
 </div>
 
 <br>
@@ -124,26 +124,131 @@
 </body>
 
 <script>
+
+    var positionOnScreen = 0;
+    var position = 0;
+    var speed = 1;
+    var a = document.getElementById('a');
+    var r = document.getElementById('r');
+    var p = document.getElementById('p');
+    var s = document.getElementById('s');
+    var MarsRover = document.getElementById('MarsRover');
+
     a.addEventListener("click", function () {
-        var start = Date.now();
-        document.getElementById('a').style.visibility = 'hidden';
-        document.getElementById('r').style.visibility = 'hidden';
-        var timer = setInterval(function () {
-            var timePassed = Date.now() - start;
+        if (!MarsRover.classList.contains('reverse')) {
+            var promise = new Promise(function (resolve, reject) {
+                var start = Date.now();
+                a.style.visibility = 'hidden';
+                r.style.visibility = 'hidden';
+                let timer = setInterval(function () {
 
-            if (timePassed >= 2000) {
-                clearInterval(timer);
-                return;
-            }
-            draw(timePassed);
+                    var timePassed = Date.now() - start;
 
-        }, 20);
+                    if (timePassed >= 1800 * speed) {
+                        positionOnScreen = MarsRover.style.left;
+                        positionOnScreen = positionOnScreen.replace('%', '');
+                        positionOnScreen = parseFloat(positionOnScreen);
+                        clearInterval(timer);
+                        resolve("result");
+                        return;
+                    }
 
-        function draw(timePassed) {
-            MarsRover.style.left = timePassed / 200 + '%';
-            console.log(timePassed / 200 + '%');
+                    if (parseFloat(MarsRover.style.left.replace('%', '')) > 45) {
+                        positionOnScreen = -72;
+                        changeMarsUp();
+                    }
+                    MarsRover.style.left = positionOnScreen + timePassed / 200 + '%';
+                });
+
+            }, 20);
+
+
+            promise.then(function (result) {
+                speedUp();
+                p.innerHTML = 'Position: ' + position;
+                s.innerHTML = 'Speed: ' + speed;
+                MarsRover.style.left = positionOnScreen + '%';
+                a.style.visibility = 'visible';
+                r.style.visibility = 'visible';
+            });
+
+        }else{
+            var promise = new Promise(function (resolve, reject) {
+                var start = Date.now();
+                a.style.visibility = 'hidden';
+                r.style.visibility = 'hidden';
+                let timer = setInterval(function () {
+
+                    var timePassed = Date.now() - start;
+
+                    if (timePassed >= 1800 * speed*(-1)) {
+                        positionOnScreen = MarsRover.style.left;
+                        positionOnScreen = positionOnScreen.replace('%', '');
+                        positionOnScreen = parseFloat(positionOnScreen);
+                        clearInterval(timer);
+                        resolve("result");
+                        return;
+                    }
+
+
+                    if (parseFloat(MarsRover.style.left.replace('%', '')) < -45) {
+                        positionOnScreen = 72;
+                        changeMarsDown();
+                    }
+                    MarsRover.style.left = positionOnScreen -(timePassed / 200) + '%';
+                });
+
+            }, 20);
+
+
+            promise.then(function (result) {
+                speedUp();
+                p.innerHTML = 'Position: ' + position;
+                s.innerHTML = 'Speed: ' + speed;
+                MarsRover.style.left = positionOnScreen + '%';
+                console.log(MarsRover.style.left);
+                a.style.visibility = 'visible';
+                r.style.visibility = 'visible';
+            });
         }
 
     });
+
+
+    r.addEventListener("click", function () {
+        if(MarsRover.classList.contains('reverse')){
+            MarsRover.classList.remove('reverse');
+            speed = 1;
+            p.innerHTML = 'Position: ' + position;
+            s.innerHTML = 'Speed: ' + speed;
+        }else{
+            MarsRover.classList = 'reverse';
+            speed = -1;
+            p.innerHTML = 'Position: ' + position;
+            s.innerHTML = 'Speed: ' + speed;
+        }
+
+    });
+
+    function speedUp() {
+        position = position+speed;
+        speed = speed *2;
+    }
+
+
+    function changeMarsUp() {
+        let last = document.getElementById('10').innerHTML;
+        for(i = 0; i<11; i++){
+            document.getElementById(i).innerHTML = ++last;
+        }
+    }
+
+    function changeMarsDown() {
+        let last = document.getElementById('0').innerHTML;
+        for(i = 10; i>-1; i--){
+            document.getElementById(i).innerHTML = --last;
+        }
+    }
+
 </script>
 </html>
