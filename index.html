@@ -1,73 +1,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <style>
-        #MarsRover {
-            height: 120px;
-            width: 120px;
-            display: block;
-            margin-left: auto;
-            margin-right: auto;
-            margin-top: 220px;
-            position: relative;
-            cursor: pointer;
-        }
-
-        #blocktext {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .buttons{
-            text-align:center;
-        }
-
-        .button {
-            display: inline-block;
-            padding: 15px 25px;
-            font-size: 24px;
-            cursor: pointer;
-            text-align: center;
-            text-decoration: none;
-            outline: none;
-            color: #fff;
-            background-color: orange;
-            border: none;
-            border-radius: 15px;
-            box-shadow: 0 9px #999;
-        }
-
-        .button:hover {background-color: #3e8e41}
-
-        .button:active {
-            background-color: #3e8e41;
-            box-shadow: 0 5px #666;
-            transform: translateY(4px);
-        }
-
-        td, th {
-            padding: 15px;
-            border: 2px solid wheat;
-            width: 120px;
-            text-align: center;
-            color: wheat;
-        }
-        .score{
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        h3{
-            margin-right: 10px;
-        }
-
-        .reverse{
-            transform: scale(-1, 1);
-        }
-
-    </style>
+    <link rel = 'stylesheet' href = "style.css">
 </head>
 <body background="bonneville_crater.jpg">
 <h1 id="blocktext">
@@ -84,7 +18,9 @@
 </div>
 
 <br>
-<img id="MarsRover" src="MarsRover.png">
+<div id="Rover">
+    <img id="MarsRover" src="MarsRover.png">
+</div>
 <table>
     <td id="0">
         -5
@@ -125,7 +61,7 @@
 
 <script>
 
-    var positionOnScreen = 0;
+    var positionOnScreen = 455;
     var position = 0;
     var speed = 1;
     var a = document.getElementById('a');
@@ -133,7 +69,7 @@
     var p = document.getElementById('p');
     var s = document.getElementById('s');
     var MarsRover = document.getElementById('MarsRover');
-
+    var k = 0;
     a.addEventListener("click", function () {
         if (!MarsRover.classList.contains('reverse')) {
             var promise = new Promise(function (resolve, reject) {
@@ -144,7 +80,8 @@
 
                     var timePassed = Date.now() - start;
 
-                    if (timePassed >= 1800 * speed) {
+                    if (timePassed >= 1800 * (speed - k)) {
+                        k = 0;
                         positionOnScreen = MarsRover.style.left;
                         positionOnScreen = positionOnScreen.replace('%', '');
                         positionOnScreen = parseFloat(positionOnScreen);
@@ -153,11 +90,13 @@
                         return;
                     }
 
-                    if (parseFloat(MarsRover.style.left.replace('%', '')) > 45) {
-                        positionOnScreen = -72;
+                    if (parseFloat(MarsRover.style.left.replace('%', '')) > 915) {
+                        positionOnScreen = -(timePassed / 20);
+                        k = k + 0.86;
                         changeMarsUp();
                     }
-                    MarsRover.style.left = positionOnScreen + timePassed / 200 + '%';
+
+                    MarsRover.style.left = positionOnScreen + timePassed / 20 + '%';
                 });
 
             }, 20);
@@ -172,7 +111,7 @@
                 r.style.visibility = 'visible';
             });
 
-        }else{
+        } else {
             var promise = new Promise(function (resolve, reject) {
                 var start = Date.now();
                 a.style.visibility = 'hidden';
@@ -181,7 +120,8 @@
 
                     var timePassed = Date.now() - start;
 
-                    if (timePassed >= 1800 * speed*(-1)) {
+                    if (timePassed >= 1800 * (speed * (-1) - k)) {
+                        k = 0;
                         positionOnScreen = MarsRover.style.left;
                         positionOnScreen = positionOnScreen.replace('%', '');
                         positionOnScreen = parseFloat(positionOnScreen);
@@ -191,11 +131,13 @@
                     }
 
 
-                    if (parseFloat(MarsRover.style.left.replace('%', '')) < -45) {
-                        positionOnScreen = 72;
+                    if (parseFloat(MarsRover.style.left.replace('%', '')) <= 0) {
+                        k = k + 0.865;
+                        positionOnScreen = (timePassed / 20) + 915;
                         changeMarsDown();
                     }
-                    MarsRover.style.left = positionOnScreen -(timePassed / 200) + '%';
+
+                    MarsRover.style.left = positionOnScreen - (timePassed / 20) + '%';
                 });
 
             }, 20);
@@ -206,7 +148,6 @@
                 p.innerHTML = 'Position: ' + position;
                 s.innerHTML = 'Speed: ' + speed;
                 MarsRover.style.left = positionOnScreen + '%';
-                console.log(MarsRover.style.left);
                 a.style.visibility = 'visible';
                 r.style.visibility = 'visible';
             });
@@ -216,12 +157,13 @@
 
 
     r.addEventListener("click", function () {
-        if(MarsRover.classList.contains('reverse')){
+        k = 0;
+        if (MarsRover.classList.contains('reverse')) {
             MarsRover.classList.remove('reverse');
             speed = 1;
             p.innerHTML = 'Position: ' + position;
             s.innerHTML = 'Speed: ' + speed;
-        }else{
+        } else {
             MarsRover.classList = 'reverse';
             speed = -1;
             p.innerHTML = 'Position: ' + position;
@@ -231,21 +173,21 @@
     });
 
     function speedUp() {
-        position = position+speed;
-        speed = speed *2;
+        position = position + speed;
+        speed = speed * 2;
     }
 
 
     function changeMarsUp() {
         let last = document.getElementById('10').innerHTML;
-        for(i = 0; i<11; i++){
+        for (i = 0; i < 11; i++) {
             document.getElementById(i).innerHTML = ++last;
         }
     }
 
     function changeMarsDown() {
         let last = document.getElementById('0').innerHTML;
-        for(i = 10; i>-1; i--){
+        for (i = 10; i > -1; i--) {
             document.getElementById(i).innerHTML = --last;
         }
     }
