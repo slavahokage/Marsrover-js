@@ -29,14 +29,14 @@
 
                     if (parseFloat(MarsRover.style.left.replace('%', '')) > 915) {
                         positionOnScreen = -(timePassed / 2);
-                        k = k + 0.86;
+                        k = k + 0.8;
                         changeMarsUp();
                     }
 
                     MarsRover.style.left = positionOnScreen + timePassed / 2 + '%';
                 });
 
-            }, 20);
+            }, 1);
 
 
             promise.then(function (result) {
@@ -69,7 +69,7 @@
 
 
                     if (parseFloat(MarsRover.style.left.replace('%', '')) <= 0) {
-                        k = k + 0.86;
+                        k = k + 0.8;
                         positionOnScreen = (timePassed / 2) + 915;
                         changeMarsDown();
                     }
@@ -77,7 +77,7 @@
                     MarsRover.style.left = positionOnScreen - (timePassed / 2) + '%';
                 });
 
-            }, 20);
+            }, 1);
 
 
             promise.then(function (result) {
