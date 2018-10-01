@@ -17,7 +17,7 @@
 
                     var timePassed = Date.now() - start;
 
-                    if (timePassed >= 1800 * (speed - k)) {
+                    if (timePassed >= 180 * (speed - k)) {
                         k = 0;
                         positionOnScreen = MarsRover.style.left;
                         positionOnScreen = positionOnScreen.replace('%', '');
@@ -28,12 +28,12 @@
                     }
 
                     if (parseFloat(MarsRover.style.left.replace('%', '')) > 915) {
-                        positionOnScreen = -(timePassed / 20);
+                        positionOnScreen = -(timePassed / 2);
                         k = k + 0.86;
                         changeMarsUp();
                     }
 
-                    MarsRover.style.left = positionOnScreen + timePassed / 20 + '%';
+                    MarsRover.style.left = positionOnScreen + timePassed / 2 + '%';
                 });
 
             }, 20);
@@ -57,7 +57,7 @@
 
                     var timePassed = Date.now() - start;
 
-                    if (timePassed >= 1800 * (speed * (-1) - k)) {
+                    if (timePassed >= 180 * (speed * (-1) - k)) {
                         k = 0;
                         positionOnScreen = MarsRover.style.left;
                         positionOnScreen = positionOnScreen.replace('%', '');
@@ -70,11 +70,11 @@
 
                     if (parseFloat(MarsRover.style.left.replace('%', '')) <= 0) {
                         k = k + 0.86;
-                        positionOnScreen = (timePassed / 20) + 915;
+                        positionOnScreen = (timePassed / 2) + 915;
                         changeMarsDown();
                     }
 
-                    MarsRover.style.left = positionOnScreen - (timePassed / 20) + '%';
+                    MarsRover.style.left = positionOnScreen - (timePassed / 2) + '%';
                 });
 
             }, 20);
